@@ -47,8 +47,11 @@ jobs:
           name: Test-Reports
           path: ./*.html
 
-      - name: Notify Slack on success
-        uses: rtCamp/action-slack-notify@v2
+
+      - name: slack - GitHub Actions Slack integration
+        uses: act10ns/slack@v2.0.0
+        with:
+          status: in progress
         if: success()
         env:
           SLACK_CHANNEL: 'C06Q6FRSFKJ'
@@ -56,7 +59,7 @@ jobs:
           SLACK_MESSAGE: 'Test Succeeded: ${{ github.run_id }}'
           SLACK_TITLE: 'Test Execution Succeeded'
           SLACK_USERNAME: 'GitHub Actions'
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+          SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/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'
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
       - name: Notify Slack on failure
