@@ -39,10 +39,11 @@ class APIWrapper():
             return self.response.status_code
 
     def api_post_request(self,url,body,token):
+
         headers = {
             'Authorization': f'Bearer {token}'
         }
-        self.response=self.my_request.post(url,body,headers=headers)
+        self.response=self.my_request.post(url,json=body,headers=headers)
         if self.response.ok:
             return self.response
         else:

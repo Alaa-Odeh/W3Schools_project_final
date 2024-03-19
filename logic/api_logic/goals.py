@@ -5,7 +5,7 @@ class Goals:
         self.token =token
 
     def get_goals(self):
-        self.result = self.api_object.api_get_request(self.new_url,self.token)
+        self.result = self.api_object.api_get_request(self.new_url,self.token).json()
 
     def get_goal_name_and_id_as_a_list(self):
         self.get_goals()
@@ -15,8 +15,6 @@ class Goals:
             self.id_name_dict[user_id] = name
 
         print(self.id_name_dict)
-
-
 
 
     def post_a_goal(self,name,skills,hours_per_week):
