@@ -49,19 +49,11 @@ jobs:
 
 
       - name: slack - GitHub Actions Slack integration
-        uses: act10ns/slack@v2.0.0
-        with:
-          status: ${{ job.status }}
-          channel: 'C06Q6FRSFKJ'
-        if: always()
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
         env:
-          SLACK_CHANNEL: 'C06Q6FRSFKJ'
-          SLACK_COLOR: 'good'
-          SLACK_MESSAGE: 'Test Succeeded: ${{ github.run_id }}'
-          SLACK_TITLE: 'Test Execution Succeeded'
-          SLACK_USERNAME: 'GitHub Actions'
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+
 
 
       - name: Notify Slack on failure
