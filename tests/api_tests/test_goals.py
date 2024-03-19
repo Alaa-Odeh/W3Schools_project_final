@@ -1,7 +1,7 @@
 import os
 import unittest
 from pathlib import Path
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 from infra.infra_api.api_wrapper import APIWrapper
 from logic.api_logic.goals import Goals
 
@@ -10,10 +10,11 @@ class TestGoals(unittest.TestCase):
     def setUp(self):
         self.my_api = APIWrapper()
         self.url = self.my_api.url
-        #env_path = Path(__file__).resolve().parent.parent.parent / '.env'
-        #load_dotenv(dotenv_path=env_path)
+        env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+        load_dotenv(dotenv_path=env_path)
         self.token=os.getenv('SECRET_TOKEN')
         self.goals = Goals(self.my_api, self.url,self.token)
+        print(self.token)
     def test_get_response_goals(self):
         self.goals.get_goals()
         print(self.goals.result)
