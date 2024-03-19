@@ -12,7 +12,6 @@ class TestGoals(unittest.TestCase):
         #self.token = self
         self.token=os.getenv('SECRET_TOKEN')
         self.goals = Goals(self.my_api, self.url,self.token)
-###
     def test(self):
         self.goals.get_goals()
         print(self.goals.result)
