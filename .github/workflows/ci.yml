@@ -62,6 +62,7 @@ jobs:
           SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
+
       - name: Notify Slack on failure
         uses: act10ns/slack@v2.0.0
         if: failure()
