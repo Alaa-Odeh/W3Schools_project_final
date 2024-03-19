@@ -3,7 +3,7 @@ class Goals:
         self.api_object = api_object
         self.new_url = url+"goals-api/goals"
         self.token =token
-
+#
     def get_goals(self):
         self.result = self.api_object.api_get_request(self.new_url,self.token).json()
 
