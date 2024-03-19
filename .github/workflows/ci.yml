@@ -16,7 +16,7 @@ jobs:
           MY_TOKEN: ${{ secrets.API_PERSONAL_TOKEN }}
         run: |
           echo "Using secret token $SECRET_TOKEN"
-          python test_goals.py
+          python tests.api_tests.test_goals.py
 
       - name: Checkout repository
         uses: actions/checkout@v2
