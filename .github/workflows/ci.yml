@@ -52,7 +52,6 @@ jobs:
         uses: act10ns/slack@v2.0.0
         with:
           status: in progress
-        if: success()
         env:
           SLACK_CHANNEL: 'C06Q6FRSFKJ'
           SLACK_COLOR: 'good'
@@ -60,7 +59,7 @@ jobs:
           SLACK_TITLE: 'Test Execution Succeeded'
           SLACK_USERNAME: 'GitHub Actions'
           SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/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'
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
 
       - name: Notify Slack on failure
         uses: rtCamp/action-slack-notify@v2
