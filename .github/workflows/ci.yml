@@ -16,7 +16,7 @@ jobs:
           MY_TOKEN: ${{ secrets.API_PERSONAL_TOKEN }}
         run: |
           echo "Using secret token $SECRET_TOKEN"
-          python tests.api_tests.test_goals.py
+          python tests/api_tests/test_goals.py
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -25,10 +25,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-      - name: List directory contents
-        run: |
-          pwd
-          ls -l
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
