@@ -27,6 +27,12 @@ pipeline {
         }
     }
     post {
+        success {
+                slackSend(channel: 'C06Q6FRSFKJ',color: "good", message: "Build succeeded")
+            }
+            failure {
+                slackSend(channel: 'C06Q6FRSFKJ', message: "Build failed")
+            }
         always {
             archiveArtifacts artifacts: "${TEST_REPORTS}/*.html", allowEmptyArchive: true
         }
