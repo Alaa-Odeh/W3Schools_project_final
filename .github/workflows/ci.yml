@@ -48,16 +48,11 @@ jobs:
           path: ./*.html
 
 
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
-
-
       - name: slack - GitHub Actions Slack integration
-        uses: rtCamp/action-slack-notify@v2
+        uses: act10ns/slack@v2.0.0
         with:
           status: ${{ job.status }}
+          channel: 'C06Q6FRSFKJ'
         if: always()
         env:
           SLACK_CHANNEL: 'C06Q6FRSFKJ'
@@ -65,12 +60,12 @@ jobs:
           SLACK_MESSAGE: 'Test Succeeded: ${{ github.run_id }}'
           SLACK_TITLE: 'Test Execution Succeeded'
           SLACK_USERNAME: 'GitHub Actions'
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
 
       - name: Notify Slack on failure
-        uses: rtCamp/action-slack-notify@v2
+        uses: act10ns/slack@v2.0.0
         if: failure()
         env:
           SLACK_CHANNEL: 'C06Q6FRSFKJ'
@@ -78,5 +73,5 @@ jobs:
           SLACK_MESSAGE: 'Test Failed: ${{ github.run_id }}'
           SLACK_TITLE: 'Test Execution Failed'
           SLACK_USERNAME: 'GitHub Actions'
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
