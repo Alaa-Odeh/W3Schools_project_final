@@ -38,8 +38,6 @@ jobs:
           echo "Using secret token $SECRET_TOKEN"
           python tests/api_tests/test_goals.py
 
-
-
       - name: Upload Test Report
         uses: actions/upload-artifact@v2
         if: always()
@@ -48,20 +46,3 @@ jobs:
           path: ./*.html
 
 
-      - name: slack - GitHub Actions Slack integration
-        id: slack
-        uses: slackapi/slack-github-action@v1.25.0
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Notify Slack on failure
-        uses: act10ns/slack@v2.0.0
-        if: failure()
-        env:
-          SLACK_CHANNEL: 'C06Q6FRSFKJ'
-          SLACK_COLOR: 'danger'
-          SLACK_MESSAGE: 'Test Failed: ${{ github.run_id }}'
-          SLACK_TITLE: 'Test Execution Failed'
-          SLACK_USERNAME: 'GitHub Actions'
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
