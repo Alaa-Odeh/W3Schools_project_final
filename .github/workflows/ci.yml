@@ -22,15 +22,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Use secret token
-        env:
-          MY_TOKEN: ${{ secrets.SECRET_TOKEN }}
-        run: |
-          echo "Using secret token $SECRET_TOKEN"
-          python tests/api_tests/test_goals.py
-
-
-
       - name: Setup ChromeDriver
         uses: browser-actions/setup-chrome@latest
 
@@ -38,6 +29,8 @@ jobs:
         uses: browser-actions/setup-firefox@latest
 
       - name: Run API test_articles.py
+        env:
+          MY_TOKEN: ${{ secrets.SECRET_TOKEN }}
         run: python -m unittest tests.api_tests.test_goals.TestGoals
 
       - name: Run tests with pytest and generate report
