@@ -1,0 +1,11 @@
+{
+  "news": "https://pathfinder-api.kai.w3spaces.com/",
+  "name": "Testing website",
+  "version": "1.0.0",
+  "description": "Testing API",
+  "grid": true,
+  "grid type": "parallel",
+  "grid size": 18,
+  "jira_url":"https://alaao24.atlassian.net/",
+  "project_key": "FAP"
+  }
