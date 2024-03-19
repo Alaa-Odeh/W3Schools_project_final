@@ -1,6 +1,5 @@
 import os
 import unittest
-#from dotenv import load_dotenv
 from infra.infra_api.api_wrapper import APIWrapper
 from logic.api_logic.goals import Goals
 
