@@ -59,7 +59,7 @@ jobs:
           SLACK_MESSAGE: 'Test Succeeded: ${{ github.run_id }}'
           SLACK_TITLE: 'Test Execution Succeeded'
           SLACK_USERNAME: 'GitHub Actions'
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
       - name: Notify Slack on failure
@@ -71,5 +71,5 @@ jobs:
           SLACK_MESSAGE: 'Test Failed: ${{ github.run_id }}'
           SLACK_TITLE: 'Test Execution Failed'
           SLACK_USERNAME: 'GitHub Actions'
-          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+          SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
