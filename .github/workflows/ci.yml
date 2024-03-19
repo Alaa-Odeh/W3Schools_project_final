@@ -30,7 +30,7 @@ jobs:
 
       - name: Run API test_articles.py
         env:
-          MY_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
         run: python -m unittest tests.api_tests.test_goals.TestGoals
 
       - name: Run tests with pytest and generate report
