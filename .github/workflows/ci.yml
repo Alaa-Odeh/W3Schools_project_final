@@ -24,7 +24,7 @@ jobs:
 
       - name: Use secret token
         env:
-          MY_TOKEN: ${{ secrets.API_PERSONAL_TOKEN }}
+          MY_TOKEN: ${{ secrets.SECRET_TOKEN }}
         run: |
           echo "Using secret token $SECRET_TOKEN"
           python tests/api_tests/test_goals.py
