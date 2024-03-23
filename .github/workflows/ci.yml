@@ -26,17 +26,12 @@ jobs:
         uses: browser-actions/setup-chrome@latest
       - name: Setup FirefoxDriver
         uses: browser-actions/setup-firefox@latest
+
       - name: Run tests with pytest and generate report
         continue-on-error: true
         run: |
-            pytest  tests/test_api/api_test_runner.py --html=report_api.html --self-contained-html          
+            pytest  tests/tests_runner.py --html=report_api.html --self-contained-html          
 
-      - name: Run API test_articles.py
-        env:
-          MY_TOKEN: ${{ secrets.SECRET_TOKEN }}
-        run: |
-          echo "Using secret token $SECRET_TOKEN"
-          python tests/api_tests/test_goals.py
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v2

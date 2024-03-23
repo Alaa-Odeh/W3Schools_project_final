@@ -18,6 +18,7 @@ class APIWrapper():
         self.auth_jira = JIRA(basic_auth=("kharbosh.computer@gmail.com", token),
                          options={'server': self.config['jira_url']})
         self.project_key=self.config['project_key']
+        self.token=self.config['token']
     def create_issue(self,summary,description,project_key,assignee='alaa odeh',issue_type='Bug'):
         issue_dict={
             'summary': summary,
@@ -28,9 +29,9 @@ class APIWrapper():
         new_issue = self.auth_jira.create_issue(fields=issue_dict)
         return new_issue.key
 
-    def api_get_request(self,url,token):
+    def api_get_request(self,url):
         headers = {
-            'Authorization': f'Bearer {token}'
+            'Authorization': f'Bearer {self.token}'
         }
         self.response=self.my_request.get(url, headers=headers)
         if self.response.ok:
@@ -38,20 +39,21 @@ class APIWrapper():
         else:
             return self.response.status_code
 
-    def api_post_request(self,url,body,token):
+    def api_post_request(self,url,body):
 
         headers = {
-            'Authorization': f'Bearer {token}'
+            'Authorization': f'Bearer {self.token}'
         }
+
         self.response=self.my_request.post(url,json=body,headers=headers)
         if self.response.ok:
             return self.response
         else:
             return self.response.status_code
 
-    def api_delete_request(self, url, token):
+    def api_delete_request(self, url):
         headers = {
-            'Authorization': f'Bearer {token}'
+            'Authorization': f'Bearer {self.token}'
         }
         self.response = self.my_request.delete(url, headers=headers)
         if self.response.ok:
@@ -59,9 +61,9 @@ class APIWrapper():
         else:
             return self.response.status_code
 
-    def api_put_request(self, url,body, token):
+    def api_put_request(self, url,body):
         headers = {
-            'Authorization': f'Bearer {token}'
+            'Authorization': f'Bearer {self.token}'
         }
         self.response = self.my_request.put(url,body, headers=headers)
         if self.response.ok:
