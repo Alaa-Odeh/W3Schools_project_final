@@ -14,10 +14,11 @@ class BrowserWrapper:
     def __init__(self):
         self._driver = None
         config_path  = Path(__file__).resolve().parents[2].joinpath("config.json")
-
         with open(config_path, 'r') as config_file:
             self.config = json.load(config_file)
         self.hub_url = self.config["hub_url"]
+        self.cookies = self.config["user_cookies"]
+
 
         token = 'ATATT3xFfGF09zxxyNEWZufXBZbGVJog8nRzG7_IggWzimhiYh0ZbFTfvsYNHfuCe_c1A_th5eeCINDMAvtgOWgGxLMtsNChMb-DRin7X8ip-sQxFFfuPJC-kvvwfuHeV2VATrvBPINg07GBKs9IkzwX20JpJLwKnF3uu-7tT3zIHqDo4qpyc6E=0C5BD39D'
         auth_jira = JIRA(basic_auth=("kharbosh.computer @ gmail.com", token), options={'server': self.config['jira_url']})
@@ -31,6 +32,12 @@ class BrowserWrapper:
         self._driver.maximize_window()
 
     def build_cap(self):
+        #proxy_ip = 'localhost'  # Default ZAP Proxy IP
+        #proxy_port = '8081'  # Default ZAP Proxy Port
+        #zap_proxy = f"{proxy_ip}:{proxy_port}"
+
+        #self.chrome_cap.add_argument(f'--proxy-server={zap_proxy}')
+        #self.chrome_cap.add_argument('--ignore-certificate-errors')
         self.chrome_cap = webdriver.ChromeOptions()
         self.chrome_cap.capabilities['platformName'] = 'Windows'
 
@@ -61,26 +68,30 @@ class BrowserWrapper:
         test_case(self._driver)
 
 
-    def run_single_browser(self,test_cases,browser,user=None):
+    def run_single_browser(self):
+        browser=self.config["browser"]
         if browser == "Chrome":
-            chrome_options = Options()
-           #chrome_options.add_argument("--headless")  # for headless mode
-           #chrome_options.add_argument("--no-sandbox")  # necessary for running as root within Docker
-           #chrome_options.add_argument("--disable-dev-shm-usage")  # overcome limited resource problems
-            #chrome_options.add_argument("--verbose")  # adds verbose logging
-            #chrome_options.add_argument("--log-path=chromedriver.log")  # specifies location of the log file
+            #proxy_ip = 'localhost'  # Default ZAP Proxy IP
+            #proxy_port = '8081'  # Default ZAP Proxy Port
+            #zap_proxy = f"{proxy_ip}:{proxy_port}"
 
-            self._driver = webdriver.Chrome(options=chrome_options)
+           # self.chrome_cap = webdriver.ChromeOptions()
+           # self.chrome_cap.add_argument(f'--proxy-server={zap_proxy}')
+           #self.chrome_cap.add_argument('--ignore-certificate-errors')
+            self._driver = webdriver.Chrome()
+
         elif browser == "FireFox":
             self._driver = webdriver.Firefox()
         elif browser == "Edge":
             self._driver = webdriver.Edge()
+
         self._driver.get(self.config["url"])
+        #for cookie in self.cookies:
+            #print(f"Current URL: {self._driver.current_url}")
+            # Add the cookie for the current domain.
+
+        self._driver.get("https://www.w3schools.com")
         self._driver.maximize_window()
-        for test_case in test_cases:
 
-                test_case(self._driver)
-                self._driver.get(self.config["url"])
-
-    def teardown(self):
-        self._driver.quit()
+    #def teardown(self):
+     #   self._driver.quit()
