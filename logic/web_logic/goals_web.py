@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from pathlib import Path
 
 from selenium.webdriver import ActionChains
@@ -17,8 +18,8 @@ class GoalsWeb():
     CREATE_BUTTON='//button[contains(text(),"Create")]'
     RESUME_LEARNING_BUTTON='//div[@class="css-13htum"]'
     UPPER_FRAME='//iframe[@id="top-nav-bar-iframe"]'
-
-
+    EDIT_GOAL='//p[contains(text(),"Back")]/following-sibling::*[1]'
+    UPDATE_GOAL='//button[contains(text(),"Update")]'
     def __init__(self, driver):
         self._driver =driver
         wait = WebDriverWait(driver, 20)  # Timeout of 10 seconds
@@ -45,8 +46,25 @@ class GoalsWeb():
     def click_on_add_additional_skills_button(self,):
         self.add_additional_skills_button.click()
 
+    def locate_edit_goal_button(self):
+        self.goal_edit_button=WebDriverWait(self._driver, 15).until(EC.element_to_be_clickable((By.XPATH, self.EDIT_GOAL)))
 
+    def click_on_edit_goal_button(self):
+        self.goal_edit_button.click()
+        self.update_goal_button=WebDriverWait(self._driver,15).until(EC.element_to_be_clickable((By.XPATH, self.UPDATE_GOAL)))
 
+    def click_on_update_goal_button(self):
+        self.update_goal_button.click()
+    def make_changes(self,chosen_skills,courses_levels,hours_weekly):
+        self.locate_edit_goal_button()
+        self.click_on_edit_goal_button()
+        self.add_additional_skills_button = WebDriverWait(self._driver, 15).until(EC.element_to_be_clickable((By.XPATH, self.ADD_ADDITIONAL_SKILLS_BUTTON)))
+        self.click_on_add_additional_skills_button()
+        for skill, level in zip(chosen_skills, courses_levels):
+            self.click_on_skills_checkbox(skill)
+            self.set_course_level_to_your_choice(level)
+        self.set_hours_weekly_slider(hours_weekly)
+        self.click_on_update_goal_button()
     def click_on_skills_checkbox(self,chosen_skill):
         labels = f'//label[./span[contains(text(),"{chosen_skill}")]]//span'
         self.skills_checkbox = self._driver.find_elements(By.XPATH, labels)[0]
@@ -98,7 +116,9 @@ class GoalsWeb():
                 level_name = percent_to_levels.get(percentage_int)
                 if level_name:
                     self.matching_level_names.append(level_name)
-        self.skills_elements = [WebDriverWait(self._driver, 10).until(EC.presence_of_element_located((By.XPATH, f'//p[contains(text(),"{skill}")]')))for skill in skills]
+
+        self.skills_elements = WebDriverWait(self._driver, 15).until(EC.presence_of_all_elements_located((By.XPATH, f'//p[contains(text(),"{goal_name}")]/ancestor::button/following-sibling::div[3]/div/div/div/div/div/p')))
+        self.skills_names=[self._driver.execute_script('return arguments[0].textContent', elem) for elem in self.skills_elements]
     def sort_skills_and_levels(self,skills, levels):
         if len(skills) != len(levels):
             raise ValueError("The number of skills must match the number of levels.")

@@ -10,8 +10,6 @@ from logic.web_logic.welcome_page import WelcomePage
 
 class TestGoalsWeb(unittest.TestCase):
     def setUp(self):
-        #self.test_cases = [self.test_svg_tutorial, self.test_light_mode_toggle]
-        #self.test_cases=[self.test_pathfinder_page]
         self.goals_api=GoalsAPI()
         self.browser = BrowserWrapper()
         if self.browser.config["grid"]:
@@ -37,11 +35,12 @@ class TestGoalsWeb(unittest.TestCase):
         sorted_skills,sorted_levels=self.goals_web.sort_skills_and_levels(skills, levels)
         self.goals_api.post_new_goal(goal_name,skills,levels,hours_per_week)
         self.driver.refresh()
+
         self.goals_web.extract_goal_skills_level(goal_name,skills)
         self.assertEqual(self.goals_web.goal_name_in_my_goals.text,goal_name,"Goal name Does Not Exist in My Goals Page")
-        self.assertEqual(len(self.goals_web.skills_elements),len(sorted_skills),"Missing a skill in the Goal")
+        self.assertListEqual(self.goals_web.skills_names, sorted_skills,"Missing a skill in the Goal")
         self.assertListEqual(self.goals_web.matching_level_names,sorted_levels,"Missing skill level")
 
-    def tearDown(self):
-        self.goals_api.delete_goal()
+   # def tearDown(self):
+    #    self.goals_api.delete_goal()
 

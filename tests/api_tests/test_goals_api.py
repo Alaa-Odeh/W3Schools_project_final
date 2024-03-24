@@ -34,10 +34,10 @@ class TestGoalsAPI(unittest.TestCase):
         courses_levels=["Professional","Beginner","Professional","Beginner"]
         hours_weekly=8
         self.goals_web.set_goal_in_web(goal_name,chosen_skills,courses_levels,hours_weekly)
-        skill_names,skill_levels=self.goals_api.get_created_goal_info(chosen_skills)
+        skill_names,skill_levels,hours_per_week= self.goals_api.get_goal_info(chosen_skills)
         self.assertListEqual(skill_names,chosen_skills,"Skills dont match")
         self.assertListEqual(skill_levels,courses_levels,"levels Dont Match")
-
+        self.assertEqual(hours_per_week,hours_weekly,"Weekly hours Dont match")
     def tearDown(self):
         self.goals_api.delete_goal()
 

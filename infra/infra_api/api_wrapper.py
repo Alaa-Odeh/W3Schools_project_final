@@ -65,7 +65,7 @@ class APIWrapper():
         headers = {
             'Authorization': f'Bearer {self.token}'
         }
-        self.response = self.my_request.put(url,body, headers=headers)
+        self.response = self.my_request.put(url,json=body, headers=headers)
         if self.response.ok:
             return self.response
         else:
