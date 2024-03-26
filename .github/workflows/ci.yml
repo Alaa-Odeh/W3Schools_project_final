@@ -26,7 +26,8 @@ jobs:
 
       - name: Setup FirefoxDriver
         uses: browser-actions/setup-firefox@latest
-
+      - name: List tests directory
+        run: ls -l tests/
       - name: Run tests with pytest and generate report
         continue-on-error: true
         run: |
