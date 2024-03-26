@@ -6,7 +6,7 @@
   "hub_url": "http://localhost:4445/wd/hub",
   "grid": true,
   "browser": "Chrome",
-  "grid type": "parallel",
+  "grid type": "serial",
   "grid size": 6,
   "jira_url": "https://alaao24.atlassian.net/",
   "project_key": "FAP",
