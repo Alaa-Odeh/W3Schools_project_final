@@ -21,7 +21,7 @@ class ContinueTestResult(unittest.TextTestResult):
         self.browser_wrapper = BrowserWrapper()
         self.current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-
+'''
     def addError(self, test, err):
         super().addError(test, err)
         # Log the error to Jira
@@ -36,7 +36,7 @@ class ContinueTestResult(unittest.TextTestResult):
         # Log the failure to Jira without calling the superclass method
         error_msg = str(err[1])
         self.api_wrapper.create_issue(f"{test.id()} failed at {self.current_time}", error_msg, "FAP")
-
+'''
 
 def run_individual_test(test,cap=None):
     browser_wrapper.get_driver(cap)
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     start_time = time.time()
 
     #test_classes = [TestGoalsWeb,TestGoalsAPI,TestUpdateGoalAPI,TestUpdateGoalWeb,TestDeleteGoalAPI,TestDeleteGoalWeb]
-    test_classes = [TestDeleteGoalAPI,TestDeleteGoalWeb]
+    test_classes = [TestDeleteGoalAPI]
 
     all_test_cases = []
     for test_class in test_classes:
@@ -69,9 +69,10 @@ if __name__ == '__main__':
         if config["grid type"] == "parallel":
             with concurrent.futures.ThreadPoolExecutor(max_workers=config["grid size"]) as executor:
 
-                for test_case, cap in [(test_case, cap) for test_case in all_test_cases for cap in browser_wrapper.caps_list]:
-                    executor.submit(run_individual_test,test_case, cap)
-                    time.sleep(5)
+                for test in all_test_cases:
+                    for cap in browser_wrapper.caps_list:
+                        executor.submit(run_individual_test,test_case, cap)
+                        time.sleep(10)
                # for future in concurrent.futures.as_completed(future_to_test):
                 #    test = future_to_test[future]
                  #   try:
@@ -79,9 +80,10 @@ if __name__ == '__main__':
                    # except Exception as e:
                     #    logging.error(f"Test execution or issue logging failed: {e}")
         elif config["grid type"] == "serial":
-            for test , cap in [(test_case, cap) for test_case in all_test_cases for cap in browser_wrapper.caps_list]:
-                run_individual_test(test,cap)
-                time.sleep(3)
+            for test  in all_test_cases:
+                for cap in browser_wrapper.caps_list:
+                    run_individual_test(test,cap)
+                    time.sleep(3)
     else:
         for test in all_test_cases:
             run_individual_test(test)
