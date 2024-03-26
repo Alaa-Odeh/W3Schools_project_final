@@ -41,9 +41,9 @@ pipeline {
                 ls -la
                 echo "Checking if tests_runner.py exists..."
                 if [ -f tests/tests_runner.py ]; then
-                    echo "tests_runner.py exists"
+                    echo "tests\\tests_runner.py exists"
                 else
-                    echo "tests_runner.py does not exist"
+                    echo "tests\\tests_runner.py does not exist"
                 fi
                 """
             } else {
@@ -67,7 +67,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        bat 'call venv\\Scripts\\pip.exe -m pytest tests --html=${TEST_REPORTS}\\report.html --self-contained-html'
+                        bat 'call venv\\Scripts\\python.exe -m pytest tests\\tests_runner --html=${TEST_REPORTS}\\report.html --self-contained-html'
                     } catch (Exception e) {
                         echo "Tests failed, but the build continues."
                     }
