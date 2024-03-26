@@ -67,7 +67,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        bat 'call venv\\Scripts\\python.exe -m venv\\Scripts\\pytest.exe tests --html=${TEST_REPORTS}\\report.html --self-contained-html'
+                        bat 'call venv\\Scripts\\pip.exe -m pytest tests --html=${TEST_REPORTS}\\report.html --self-contained-html'
                     } catch (Exception e) {
                         echo "Tests failed, but the build continues."
                     }
