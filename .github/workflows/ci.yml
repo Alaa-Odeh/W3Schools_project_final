@@ -5,6 +5,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -27,17 +29,15 @@ jobs:
 
       - name: List tests directory
         run: ls -l tests/
-        working-directory: ${{ github.workspace }}
 
       - name: Print working directory
         run: pwd
-        working-directory: ${{ github.workspace }}
 
       - name: Run tests with pytest and generate report
         continue-on-error: true
         run: |
-          python -m pytest tests/tests_runner.py --html=report_api.html --self-contained-html
-        working-directory: ${{ github.workspace }}
+            python -m pytest  tests/tests_runner.py --html=report_api.html --self-contained-html          
+
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v2
@@ -45,4 +45,6 @@ jobs:
         with:
           name: Test-Reports
           path: ./*.html
-        working-directory: ${{ github.workspace }}
+
+
+
