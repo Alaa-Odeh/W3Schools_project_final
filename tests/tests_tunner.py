@@ -21,7 +21,7 @@ class ContinueTestResult(unittest.TextTestResult):
         self.browser_wrapper = BrowserWrapper()
         self.current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-'''
+
     def addError(self, test, err):
         super().addError(test, err)
         # Log the error to Jira
@@ -37,7 +37,7 @@ class ContinueTestResult(unittest.TextTestResult):
         error_msg = str(err[1])
         self.api_wrapper.create_issue(f"{test.id()} failed at {self.current_time}", error_msg, "FAP")
 
-'''
+
 def run_individual_test(test,cap=None):
     browser_wrapper.get_driver(cap)
     test.browser=browser_wrapper
