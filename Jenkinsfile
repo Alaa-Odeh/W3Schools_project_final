@@ -40,7 +40,7 @@ pipeline {
                 echo Checking directory...
                 dir
                 echo Checking if tests_runner.py exists...
-                if exist tests\\tests_runner.py (
+                if exist tests/tests_runner.py (
                     echo tests_runner.py exists
                 ) else (
                     echo tests_runner.py does not exist
