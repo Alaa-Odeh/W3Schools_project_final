@@ -35,7 +35,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --upgrade pip
 
 #copy the app file to the container
-COPY W3schools_project .
+COPY . /user/src/app
 
 #run command line
 #CMD ["python", "-m", "unittest", "tests.test_web.test_log_in_page.Login_Page_Test.test_run"]
