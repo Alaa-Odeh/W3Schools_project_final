@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        PYTHON_PATH = "C:\\Users\\Alaa Oda\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
-        PIP_PATH = '"C:\\Users\\Alaa Oda\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\pip.exe"'
+        PYTHON_PATH = "C:\\Users\\Alaa Oda\\AppData\\Local\\Programs\\Python\\Python311\\python.exe"
+        PIP_PATH = '"C:\\Users\\Alaa Oda\\AppData\\Local\\Programs\\Python\\Python311\\Scripts\\pip.exe"'
         TEST_REPORTS = 'test-reports'
         IMAGE_NAME = 'tests'
         TAG = 'latest'
@@ -73,14 +73,7 @@ pipeline {
         always {
             archiveArtifacts artifacts: "${TEST_REPORTS}/*.html", allowEmptyArchive: true
             echo 'Cleaning up...'
-            // Stop and remove any stray containers that might be using the image
-            // Use the correct container names as per the tests run
-            bat "docker stop api_test_container || true"
-            bat "docker rm api_test_container || true"
-            bat "docker stop web_test_container || true"
-            bat "docker rm web_test_container || true"
-            // Force remove the Docker image, if necessary, to clean up
-            bat "docker rmi -f ${IMAGE_NAME}:${TAG}"
+
         }
     }
 }
