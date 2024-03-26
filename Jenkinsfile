@@ -29,7 +29,7 @@ pipeline {
                     parallel(
                         'API Test': {
                             // Correct the docker run command to point to the correct script file
-                            bat "docker run --name api_test_container ${IMAGE_NAME}:${TAG} python -m unittest discover -s tests/test_api -p test_log_in_page.Login_Page_Test.test_run.py"
+                            bat "docker run --name api_test_container ${IMAGE_NAME}:${TAG} python -m unittest discover -s tests -p tests_runner.py"
                             // Ensure the container is stopped before removing it
                             bat "docker stop api_test_container"
                             bat "docker rm api_test_container"
