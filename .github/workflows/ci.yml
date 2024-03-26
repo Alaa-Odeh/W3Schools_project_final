@@ -27,8 +27,8 @@ jobs:
       - name: Setup FirefoxDriver
         uses: browser-actions/setup-firefox@latest
 
-      - name: List tests directory
-        run: ls -l tests/
+      - name: List all files in the repository
+        run: find .
 
       - name: Print working directory
         run: pwd
