@@ -28,10 +28,14 @@ jobs:
         uses: browser-actions/setup-firefox@latest
       - name: List tests directory
         run: ls -l tests/
+
+      - name: Print working directory
+        run: pwd
+
       - name: Run tests with pytest and generate report
         continue-on-error: true
         run: |
-            pytest  tests/tests_runner.py --html=report_api.html --self-contained-html          
+            python -m pytest  tests/tests_runner.py --html=report_api.html --self-contained-html          
 
 
       - name: Upload Test Report
