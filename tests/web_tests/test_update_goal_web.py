@@ -9,7 +9,7 @@ from logic.web_logic.login_page import LoginPage
 from logic.web_logic.welcome_page import WelcomePage
 
 
-class UpdateGoalWeb(unittest.TestCase):
+class TestUpdateGoalWeb(unittest.TestCase):
     def setUp(self):
         self.goals_api=GoalsAPI()
         self.browser = BrowserWrapper()
@@ -39,7 +39,7 @@ class UpdateGoalWeb(unittest.TestCase):
         self.driver.refresh()
 
         self.sorted_skills, self.sorted_levels = self.goals_web.sort_skills_and_levels(chosen_skills_to_update, courses_levels_to_update)
-        self.goals_web.extract_goal_skills_level(self.goal_name, chosen_skills_to_update)
+        self.goals_web.extract_goal_skills_level(self.goal_name)
         self.assertEqual(self.goals_web.goal_name_in_my_goals.text, self.goal_name,"Goal name Does Not Exist in My Goals Page")
         self.assertListEqual(self.goals_web.skills_names, self.sorted_skills, "Missing a skill in the Goal")
         self.assertListEqual(self.goals_web.matching_level_names, self.sorted_levels, " skill levels dont match")

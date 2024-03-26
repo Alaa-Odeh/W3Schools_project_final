@@ -20,7 +20,7 @@ class LoginPage():
         self._driver.implicitly_wait(5)
 
     def init(self):
-        self.continue_with_google = self._driver.find_element(By.XPATH, self.CONTINUE_WITH_GOOGLE)
+        self.continue_with_google = WebDriverWait(self._driver,20).until(EC.presence_of_element_located((By.XPATH, self.CONTINUE_WITH_GOOGLE)))
         self.log_in_button = self._driver.find_element(By.XPATH, self.LOG_IN_BUTTON)
 
     def click_continue_with_google_button(self):
@@ -32,10 +32,10 @@ class LoginPage():
         self.email_input.send_keys(email)
     def click_next_button(self,element):
         time.sleep(3)
-        self.next_button = WebDriverWait(self._driver,20).until(EC.presence_of_element_located((By.XPATH, element))).click()
+        self.next_button = WebDriverWait(self._driver,30).until(EC.presence_of_element_located((By.XPATH, element))).click()
 
     def fill_password_input_field(self,password):
-        self.password_input=WebDriverWait(self._driver,15).until(EC.visibility_of_element_located((By.XPATH,self.PASSWORD_INPUT)))
+        self.password_input=WebDriverWait(self._driver,30).until(EC.visibility_of_element_located((By.XPATH,self.PASSWORD_INPUT)))
         self.password_input.send_keys(password)
 
 

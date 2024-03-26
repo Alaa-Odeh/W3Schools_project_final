@@ -7,15 +7,15 @@ class WelcomePage:
 
     def __init__(self, driver):
         self._driver =driver
-        #self._driver.switch_to.frame(driver.find_element(By.XPATH,self.UPPER_FRAME ))
-        #self._driver.switch_to.default_content()
         self.my_path_button=self._driver.find_element(By.XPATH, self.MY_PATH)
     def init(self):
         self.log_in_button=self._driver.find_element(By.XPATH, self.LOG_IN_BUTTON)
+        self.my_path_button=self._driver.find_element(By.XPATH, self.MY_PATH)
 
     def click_log_in(self):
         self.init()
         self.log_in_button.click()
 
     def click_My_Path(self):
+        self.init()
         self.my_path_button.click()

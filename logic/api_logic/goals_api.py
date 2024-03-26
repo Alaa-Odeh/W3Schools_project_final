@@ -10,7 +10,11 @@ class GoalsAPI:
         self.new_url = self.api_object.url+"goals-api/goals"
 
     def get_goals(self):
-        self.result = self.api_object.api_get_request(self.new_url).json()
+        response = self.api_object.api_get_request(self.new_url)
+        if response and hasattr(response, 'json'):
+            self.result = response.json()
+        else:
+            self.result = None
 
 
     def post_a_goal(self,body):
@@ -24,14 +28,22 @@ class GoalsAPI:
         self.skills.create_body_for_skills(goal_name,skills_name,levels,hours_per_week)
         self.post_a_goal(self.skills.body)
 
-    def get_goal_id(self):
+    def get_goal_id(self,):
         self.get_goals()
-        return list(self.result.keys())[0]
+        if self.result != None:
+            if  len(self.result.keys())!= 0:
+                return list(self.result.keys())[0]
+        else:
+            return "No Goals Exist"
 
-    def delete_goal(self):
+    def delete_goal(self,):
+        self.get_goals()
         goal_id=self.get_goal_id()
-        self.new_url=self.new_url+f'/{goal_id}'
-        self.api_object.api_delete_request(self.new_url)
+        if goal_id is not None:
+            self.new_url=self.new_url+f'/{goal_id}'
+            self.api_object.api_delete_request(self.new_url)
+        else:
+            return "No Goals Exist"
 
     def get_goal_info(self,expected_skills):
         goal_id=self.get_goal_id()

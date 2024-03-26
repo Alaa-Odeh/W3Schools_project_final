@@ -6,14 +6,19 @@ import time
 import unittest
 import logging
 from infra.infra_api.api_wrapper import APIWrapper
+from infra.infra_web.browser_wrapper import BrowserWrapper
+from tests.api_tests.test_delete_goal_api import TestDeleteGoalAPI
 from tests.api_tests.test_goals_api import TestGoalsAPI
+from tests.api_tests.test_update_goal_api import TestUpdateGoalAPI
 from tests.web_tests.test_goals_web import TestGoalsWeb
+from tests.web_tests.test_delete_goal_web import TestDeleteGoalWeb
+from tests.web_tests.test_update_goal_web import TestUpdateGoalWeb
 
 
 class ContinueTestResult(unittest.TextTestResult):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.api_wrapper = APIWrapper()
+        self.browser_wrapper = BrowserWrapper()
         self.current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 '''
@@ -33,18 +38,22 @@ class ContinueTestResult(unittest.TextTestResult):
         self.api_wrapper.create_issue(f"{test.id()} failed at {self.current_time}", error_msg, "FAP")
 
 '''
-def run_individual_test(test):
+def run_individual_test(test,cap=None):
+    browser_wrapper.get_driver(cap)
+    test.browser=browser_wrapper
+    test.driver=browser_wrapper._driver
     suite = unittest.TestSuite([test])
     runner = unittest.TextTestRunner(resultclass=ContinueTestResult)
     runner.run(suite)
 
 
-
 if __name__ == '__main__':
-    api_wrapper = APIWrapper()
+    browser_wrapper = BrowserWrapper()
     start_time = time.time()
 
-    test_classes = [TestGoalsWeb,TestGoalsAPI]
+    #test_classes = [TestGoalsWeb,TestGoalsAPI,TestUpdateGoalAPI,TestUpdateGoalWeb,TestDeleteGoalAPI,TestDeleteGoalWeb]
+    test_classes = [TestDeleteGoalAPI,TestDeleteGoalWeb]
+
     all_test_cases = []
     for test_class in test_classes:
         test_suite = unittest.TestLoader().loadTestsFromTestCase(test_class)
@@ -54,23 +63,29 @@ if __name__ == '__main__':
     cur_dir = Path(__file__).resolve().parents[1].joinpath("config.json")
     with open(cur_dir, 'r') as config_file:
         config = json.load(config_file)
+
     if config["grid"] :
+        browser_wrapper.build_cap()
         if config["grid type"] == "parallel":
             with concurrent.futures.ThreadPoolExecutor(max_workers=config["grid size"]) as executor:
-                future_to_test = {executor.submit(run_individual_test, test): test for test in all_test_cases}
 
-                for future in concurrent.futures.as_completed(future_to_test):
-                    test = future_to_test[future]
-                    try:
-                        future.result()
-                    except Exception as e:
-                        logging.error(f"Test execution or issue logging failed: {e}")
+                for test_case, cap in [(test_case, cap) for test_case in all_test_cases for cap in browser_wrapper.caps_list]:
+                    executor.submit(run_individual_test,test_case, cap)
+                    time.sleep(5)
+               # for future in concurrent.futures.as_completed(future_to_test):
+                #    test = future_to_test[future]
+                 #   try:
+                  #      future.result()
+                   # except Exception as e:
+                    #    logging.error(f"Test execution or issue logging failed: {e}")
         elif config["grid type"] == "serial":
-            for test in all_test_cases:
-                run_individual_test(test)
+            for test , cap in [(test_case, cap) for test_case in all_test_cases for cap in browser_wrapper.caps_list]:
+                run_individual_test(test,cap)
+                time.sleep(3)
     else:
         for test in all_test_cases:
             run_individual_test(test)
+
 
 
     end_time = time.time()

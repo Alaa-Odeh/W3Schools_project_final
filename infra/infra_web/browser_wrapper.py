@@ -26,8 +26,12 @@ class BrowserWrapper:
 
 
 
-    def get_driver(self,caps,user=None):
-        self._driver = webdriver.Remote(command_executor=self.hub_url, options=caps)
+    def get_driver(self,caps=None,user=None):
+
+        if self.config["grid"]:
+                self._driver = webdriver.Remote(command_executor=self.hub_url, options=caps)
+        else:
+            self.run_single_browser()
         self._driver.get(self.config["url"])
         self._driver.maximize_window()
 
@@ -38,11 +42,11 @@ class BrowserWrapper:
 
         #self.chrome_cap.add_argument(f'--proxy-server={zap_proxy}')
         #self.chrome_cap.add_argument('--ignore-certificate-errors')
-        self.chrome_cap = webdriver.ChromeOptions()
-        self.chrome_cap.capabilities['platformName'] = 'Windows'
 
         self.firfox_cap=webdriver.FirefoxOptions()
         self.firfox_cap.capabilities['platformName'] = 'Windows'
+        self.chrome_cap = webdriver.ChromeOptions()
+        self.chrome_cap.capabilities['platformName'] = 'Windows'
 
         self.edge_cap = webdriver.EdgeOptions()
         self.edge_cap.capabilities['platformName'] = 'Windows'
@@ -63,12 +67,11 @@ class BrowserWrapper:
             for test_case in test_cases:
                 self.run_test_case(test_case,caps)
 
-    def run_test_case(self,test_case, caps):
+    def run_test_case(self,test_case, caps=None):
         self.get_driver(caps,self.user)
-        test_case(self._driver)
 
 
-    def run_single_browser(self):
+    def run_single_browser(self,test_case=None):
         browser=self.config["browser"]
         if browser == "Chrome":
             #proxy_ip = 'localhost'  # Default ZAP Proxy IP
@@ -84,8 +87,9 @@ class BrowserWrapper:
             self._driver = webdriver.Firefox()
         elif browser == "Edge":
             self._driver = webdriver.Edge()
+        #if test_case!=None:
+         #   test_case()
 
-        self._driver.get(self.config["url"])
         #for cookie in self.cookies:
             #print(f"Current URL: {self._driver.current_url}")
             # Add the cookie for the current domain.
@@ -93,5 +97,6 @@ class BrowserWrapper:
         self._driver.get("https://www.w3schools.com")
         self._driver.maximize_window()
 
-    #def teardown(self):
-     #   self._driver.quit()
+    def teardown(self):
+        self._driver.close()
+        self._driver.quit()
