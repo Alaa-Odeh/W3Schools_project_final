@@ -13,32 +13,7 @@ pipeline {
                 bat 'call "%PYTHON_PATH%" -m venv venv'
                 bat 'call venv\\Scripts\\python.exe -m pip install --upgrade pip'
                 bat 'call venv\\Scripts\\pip.exe install -r requirements.txt'
-                bat 'call venv\\Scripts\\pip.exe install pytest pytest-html'
-            }
-        }
-
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    def customImage = docker.build("${IMAGE_NAME}:${TAG}")
-                }
-            }
-        }
-        stage('Run API Tests in Docker') {
-            steps {
-                script {
-                    parallel(
-                        'API Test': {
-                            // Correct the docker run command to point to the correct script file
-                            bat "docker run --name api_test_container ${IMAGE_NAME}:${TAG} python -m unittest discover -s tests -p tests_runner.py"
-                            // Ensure the container is stopped before removing it
-                            bat "docker stop api_test_container"
-                            bat "docker rm api_test_container"
-                        },
-                        // Add other parallel tests here as necessary
-                    )
-                }
+                bat 'call venv\\Scripts\\pip.exe install pytest pytest-html selenium'
             }
         }
 
