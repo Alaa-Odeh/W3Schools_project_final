@@ -32,6 +32,37 @@ pipeline {
                 bat 'ping 127.0.0.1 -n 11 > nul' // Windows command to sleep for 10 seconds
             }
         }
+        stage('Check Directory and File') {
+    steps {
+        script {
+            if (isUnix()) {
+                sh """
+                echo "Checking directory..."
+                ls -la
+                echo "Checking if tests_runner.py exists..."
+                if [ -f tests/tests_runner.py ]; then
+                    echo "tests_runner.py exists"
+                else
+                    echo "tests_runner.py does not exist"
+                fi
+                """
+            } else {
+                // For Windows Batch Command
+                bat """
+                echo Checking directory...
+                dir
+                echo Checking if tests_runner.py exists...
+                if exist tests\\tests_runner.py (
+                    echo tests_runner.py exists
+                ) else (
+                    echo tests_runner.py does not exist
+                )
+                """
+            }
+        }
+    }
+}
+
         stage('Run API Tests with Pytest') {
             steps {
                 script {
