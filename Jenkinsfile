@@ -16,6 +16,23 @@ pipeline {
                 bat 'call venv\\Scripts\\pip.exe install pytest pytest-html'
             }
         }
+        stage('Check Project Directory') {
+            steps {
+                bat 'dir W3schools_project'
+            }
+        }
+        stage('Check Dockerfile') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'ls -l W3schools_project/Dockerfile'
+                    } else {
+                        // For Windows Batch Command
+                        bat 'dir W3schools_project\\Dockerfile'
+                    }
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
