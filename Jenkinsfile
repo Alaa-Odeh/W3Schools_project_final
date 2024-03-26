@@ -16,7 +16,7 @@ pipeline {
                 bat 'call venv\\Scripts\\pip.exe install pytest pytest-html selenium'
             }
         }
-        tage('Setup Selenium Server HUB') {
+        stage('Setup Selenium Server HUB') {
             steps {
                 echo 'Setting up Selenium server HUB...'
                 bat "start /B java -jar selenium-server.jar hub"
